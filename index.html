@@ -1,0 +1,343 @@
+<!-- ЧАСТЬ 1 ИЗ 5: СТИЛИ И МОБИЛЬНАЯ ВЕРСТКА -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Тренажер Сивцева</title>
+    <style>
+        :root { --bg: #f0f2f5; --card-bg: #fff; --text: #2d3748; --border: #e2e8f0; --kbd-btn: #edf2f7; --kbd-border: #cbd5e1; }
+        .dark { --bg: #1a202c; --card-bg: #2d3748; --text: #edf2f7; --border: #4a5568; --kbd-btn: #4a5568; --kbd-border: #718096; }
+        body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(--text);margin:0;padding:10px;display:flex;justify-content:center;-webkit-user-select:none;user-select:none;transition: background 0.3s;box-sizing: border-box;}
+        .container{display:flex;flex-direction:column;gap:15px;max-width:900px;width:100%;position:relative;padding-bottom: 80px;}
+        .card,.table-card{background:var(--card-bg);padding:15px;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,0.05);text-align:center;border:1px solid var(--border);box-sizing: border-box;}
+        .card{width:100%;}.table-card{width:100%; overflow-x: auto;}
+        .theme-toggle {position:absolute;top:-5px;right:5px;background:none;border:none;font-size:22px;cursor:pointer;z-index: 10;}
+        .btn{font-size:18px;padding:14px 28px;background:#3182ce;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:bold;width: 100%;box-sizing: border-box;transition:all 0.1s ease;}
+        .btn:active{transform:scale(0.98); background:#2b6cb0;}
+        .p-btn{font-size:14px;padding:8px 16px;background:#718096;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:bold;}
+        .hearts{font-size:22px;color:#e53e3e;margin:5px 0;letter-spacing:4px;}
+        .target-box{background:var(--bg);border:2px solid var(--border);border-radius:8px;padding:15px;margin:10px 0;position:relative;overflow:hidden;}
+        .big-letter{font-size:36px;font-weight:bold;color:#3182ce;margin:5px 0;min-height:80px;display:flex;align-items:center;justify-content:center;letter-spacing:4px;}
+        .progress-bg{background:var(--border);height:8px;border-radius:4px;overflow:hidden;margin-top:10px;width:100%;}
+        .progress-fill{background:#38a169;height:100%;width:0%;transition:width 0.2s;}
+    </style>
+</head>
+<!-- ЧАСТЬ 2 ИЗ 5: СТИЛИ ИНТЕРФЕЙСА И КНОПОК -->
+<style>
+    .timer-bg{background:var(--kbd-border);height:4px;width:100%;position:absolute;top:0;left:0;}
+    .timer-fill{background:#e53e3e;height:100%;width:100%;}
+    .result{font-size:16px;font-weight:bold;margin:8px 0;min-height:22px;}
+    .error{color:#e53e3e;}
+    .kbd{display:flex;justify-content:center;gap:6px;padding:10px;background:var(--card-bg);border-top:1px solid var(--border);position:fixed;bottom:0;left:0;right:0;z-index:100;box-shadow: 0 -2px 10px rgba(0,0,0,0.05);}
+    .k-btn{font-size:18px;flex:1;max-width:50px;height:50px;background:var(--kbd-btn);border:2px solid var(--kbd-border);color:var(--text);border-radius:8px;cursor:pointer;font-weight:bold;box-shadow:0 2px 0 var(--kbd-border);display:flex;align-items:center;justify-content:center;}
+    .k-btn:active:not(:disabled){transform:translateY(2px);box-shadow:0 0 0 transparent;}
+    .k-btn:disabled{opacity:0.4;cursor:not-allowed;}
+    .stats-grid {display:grid;grid-template-columns:1fr;gap:10px;margin:15px 0;text-align:left;}
+    .stats-item {background:var(--bg);border:1px solid var(--border);padding:12px;border-radius:8px;}
+    .stats-label {font-size:12px;color:#718096;font-weight:500;}
+    .stats-value {font-size:16px;font-weight:bold;margin-top:2px;}
+    .modes-container {background:var(--kbd-btn);border-radius:8px;padding:12px;margin:10px 0;text-align:left;display:block;width:100%;box-sizing:border-box;}
+    .mode-select {display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;font-weight:500;margin-bottom:12px;padding:4px 0;}
+    .mode-select input[type="checkbox"] {width:20px;height:20px;cursor:pointer;}
+    .hint-text {font-size:13px;color:#718096;font-style:italic;min-height:18px;margin-bottom:5px;}
+    .settings-group {display:flex;flex-direction:column;gap:12px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--border);width:100%;}
+    .settings-row {display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:500;gap:10px;}
+    .settings-select {font-size:14px;padding:8px;border-radius:6px;background:var(--card-bg);color:var(--text);border:1px solid var(--kbd-border);cursor:pointer;max-width:50%;}
+    .mic-status {font-size:14px;font-weight:bold;color:#dd6b20;margin-bottom:10px;display:none;align-items:center;justify-content:center;gap:6px;padding:6px;background:rgba(221,107,32,0.1);border-radius:6px;}
+    .mic-active {color:#38a169;background:rgba(56,161,105,0.1);animation:pulse 1.5s infinite;}
+    .sivtsev-table{width:100%;border-collapse:collapse;text-align:center;font-family:Arial,sans-serif;font-weight:bold;}
+    .sivtsev-table tr{height:28px;}
+    .highlight{background:rgba(49,130,206,0.08);}
+    .highlight td span {opacity:0.2;transition:all 0.2s;}
+    .highlight td span.current-letter {opacity:1 !important;color:#fff !important;background:#3182ce !important;padding:2px 4px;border-radius:4px;}
+    .r0{font-size:26px;}.r1{font-size:20px;}.r2{font-size:16px;}.r3{font-size:14px;}.r4{font-size:12px;}.r5{font-size:11px;}
+    .r6{font-size:10px;}.r7{font-size:9px;}.r8{font-size:8px;}.r9{font-size:7px;}.r10{font-size:6px;}.r11{font-size:5px;}
+    .step-badge {font-size:11px;background:var(--kbd-btn);padding:2px 6px;border-radius:10px;margin-left:5px;}
+    @media (min-width:600px) {
+        .container {flex-direction:row;padding-bottom:20px;}
+        .card {flex:1;} .table-card {width:300px;}
+        .kbd {position:static;box-shadow:none;padding:0;margin-top:15px;border:none;background:transparent;}
+        .stats-grid {grid-template-columns:1fr 1fr;}
+    }
+</style>
+<!-- ЧАСТЬ 3 ИЗ 5: ИГРОВЫЕ ЭКРАНЫ И НАЧАЛО СКРИПТА -->
+<body>
+<div class="container" id="mainContainer">
+    <button class="theme-toggle" id="btnTheme">🌙</button>
+    <div class="card">
+        <div id="scrS">
+            <h2 style="font-size:20px;margin-top:5px;">Тренажер памяти Сивцева 🧠</h2>
+            <div class="modes-container">
+                <label class="mode-select"><span style="color:#3182ce;font-weight:bold;">🎙️ Голосовой осмотр (микрофон)</span><input type="checkbox" id="chkVoiceMode"></label>
+                <label class="mode-select"><span>🎓 Режим обучения (без таймера)</span><input type="checkbox" id="chkLearnMode"></label>
+                <label class="mode-select"><span>🔒 Скрывать всю строку целиком</span><input type="checkbox" id="chkHideFullRow"></label>
+                <div class="settings-group">
+                    <div class="settings-row">
+                        <span>📋 Стартовая строка:</span>
+                        <select id="selMaxLines" class="settings-select">
+                            <option value="3">Ряд 3 (V=0.3)</option>
+                            <option value="5">Ряд 5 (V=0.5)</option>
+                            <option value="8">Ряд 8 (V=0.8)</option>
+                            <option value="9" selected>Ряд 9 (V=0.9)</option>
+                            <option value="10">Ряд 10 (V=1.0)</option>
+                            <option value="12">Ряд 12 (V=2.0)</option>
+                        </select>
+                    </div>
+                    <div class="settings-row">
+                        <label class="mode-select" style="margin-bottom:0;width:100%;">
+                            <span>🔄 Обратный порядок (с выбранной до 1):</span>
+                            <input type="checkbox" id="chkReverseLines" checked>
+                        </label>
+                    </div>
+                    <div class="settings-row">
+                        <span>❤️ Максимум ошибок:</span>
+                        <select id="selMaxHp" class="settings-select">
+                            <option value="1">1 (Хардкор)</option>
+                            <option value="3">3</option>
+                            <option value="5" selected>5</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+                    <div class="settings-row">
+                        <span>⏱️ Время на ответ:</span>
+                        <select id="selTimerMode" class="settings-select">
+                            <option value="fast">Быстрое (5 сек)</option>
+                            <option value="standard" selected>Стандартное</option>
+                            <option value="slow">Спокойное (20 сек)</option>
+                        </select>
+                    </div>
+                </div>
+            </div><br>
+            <button id="btnS" class="btn">Начать тренировку ➔</button>
+        </div>
+        <div id="scrG" style="display:none;">
+            <div id="micStatus" class="mic-status">🎙️ Доктор слушает... Назовите букву</div>
+            <div style="display:flex;justify-content:between;align-items:center;font-weight:bold;color:#3182ce;margin-bottom:5px;">
+                <span id="lblL" style="flex:1;text-align:left;font-size:14px;">Уровень 9 / 1</span>
+                <span id="lblStep" class="step-badge"></span>
+                <button id="btnP" class="p-btn" style="margin-left:8px;">Пауза ⏸</button>
+            </div>
+            <div class="hearts" id="lblH">♥♥♥♥♥</div>
+            <div class="target-box">
+                <div class="timer-bg"><div class="timer-fill" id="bT"></div></div>
+                <div style="font-weight:bold;font-size:14px;" id="lblR"></div>
+                <div class="hint-text" id="lblHint"></div>
+                <div class="big-letter" id="lblB">░</div>
+                <div class="progress-bg"><div class="progress-fill" id="bP"></div></div>
+            </div>
+            <div class="result" id="lblRes"></div>
+            <div class="kbd" id="kb" style="display:none;"></div>
+        </div>
+        <div id="scrE" style="display:none;">
+            <h2 id="lblET" style="font-size:20px;"></h2><p id="lblED" style="font-size:15px;margin-bottom:10px;"></p>
+            <div class="stats-grid" id="statsBlock"></div>
+            <button id="btnR" class="btn">Играть снова 🔁</button>
+        </div>
+    </div>
+    <div class="table-card">
+        <div style="font-size:11px;font-weight:bold;color:#718096;margin-bottom:8px;text-align:center;">ТАБЛИЦА СИВЦЕВА</div>
+        <table class="sivtsev-table" id="mB"></table>
+    </div>
+</div>
+<!-- ЧАСТЬ 4 ИЗ 5: СИСТЕМА ГОЛОСА И ТАБЛИЦА БУКВ -->
+<script>
+    var CHART = [
+        {letters:["Ш","Б"],v:"0.1"},{letters:["М","Н","К"],v:"0.2"},{letters:["Ы","М","Б","Ш"],v:"0.3"},
+        {letters:["Б","Ы","Н","К","М"],v:"0.4"},{letters:["И","Н","Ш","М","К"],v:"0.5"},{letters:["Н","Ш","Ы","И","К","Б"],v:"0.6"},
+        {letters:["Ш","И","Н","Б","К","Ы"],v:"0.7"},{letters:["К","Н","Ш","М","Ы","Б","И"],v:"0.8"},{letters:["Б","К","Ш","М","И","Ы","Н"],v:"0.9"},
+        {letters:["Н","К","И","Б","М","Ш","Ы","Б"],v:"1.0"},
+        {letters:["Ш","И","Н","К","М","И","Ы","Б"],v:"1.5"},{letters:["И","М","Ш","Ы","Н","Б","М","К"],v:"2.0"}
+    ];
+    var lvl=0, sc=0, hp=5, tl="", tIdx=-1, lk=false, kp=false, tInt=null, tL=0, tT=10, pool=[], psd=false, st = 0;
+    var statCorrect = 0, statWrong = 0, startTime = 0, isLearnMode = false, isHideFullRow = false, isReverseLines = true, isVoiceMode = false;
+    var maxHpSetting = 5, maxLinesSetting = 9, timerSetting = "standard";
+    var ST_N = ["Слева направо", "Справа налево", "Случайный порядок"];
+    var reviewQueue = []; var recognition = null; var audioCtx = null;
+
+    function speak(text, callback) {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            var utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'ru-RU'; utterance.rate = 1.1;
+            if(callback) { utterance.onend = callback; }
+            window.speechSynthesis.speak(utterance);
+        } else if (callback) { callback(); }
+    }
+
+    function forceMicPermission(onSuccess, onError) {
+        try {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ audio: true })
+                    .then(function(stream) {
+                        stream.getTracks().forEach(function(t) { t.stop(); });
+                        if(onSuccess) onSuccess();
+                    })
+                    .catch(function(err) { if(onError) onError(err); });
+            } else { if(onError) onError("Not supported"); }
+        } catch(e) { if(onError) onError(e); }
+    }
+
+    function initSpeechRecognition() {
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            var SpeechObj = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechObj(); recognition.lang = 'ru-RU'; recognition.continuous = false; recognition.interimResults = false;
+            recognition.onstart = function() { if(isVoiceMode && !psd && !lk) document.getElementById("micStatus").classList.add("mic-active"); };
+            recognition.onend = function() { 
+                document.getElementById("micStatus").classList.remove("mic-active");
+                if (isVoiceMode && !psd && !lk && document.getElementById("scrG").style.display === "block") { try { recognition.start(); } catch(e){} }
+            };
+            recognition.onresult = function(event) {
+                if (lk || psd) return;
+                var lastResultIdx = event.results.length - 1;
+                var resultText = event.results[lastResultIdx].transcript.trim().toUpperCase();
+                var cleanLetter = "";
+                for(var i=0; i<resultText.length; i++) { 
+                    var char = resultText.charAt(i);
+                    if(["Ш","Б","М","Н","К","Ы","И"].indexOf(char) !== -1) { cleanLetter = char; break; } 
+                }
+                if(cleanLetter) { checkAnswer(cleanLetter); }
+            };
+        }
+    }
+
+    function bTab(){
+        var g=document.getElementById("mB"); g.innerHTML="";
+        CHART.forEach(function(r,i){
+            var tr=document.createElement("tr"); tr.id="tr-"+i;
+            var td=document.createElement("td"); td.className="r"+i; td.id="td-text-"+i;
+            td.innerHTML = r.letters.map(function(l, idx) { return '<span id="l-'+i+'-'+idx+'">'+l+'</span>'; }).join(" ");
+            tr.appendChild(td); g.appendChild(tr);
+        });
+    }
+
+    function bKbd(){
+        var k=document.getElementById("kb"); k.innerHTML="";
+        ["Ш","Б","М","Н","К","Ы","И"].forEach(function(l){
+            var b=document.createElement("button"); b.className="k-btn"; b.innerText=l;
+            b.onclick=function(){if(!lk&&!psd){checkAnswer(l);}}; k.appendChild(b);
+        });
+    }
+    function dis(s) { document.querySelectorAll(".k-btn").forEach(function(b){b.disabled=s;}); }
+</script>
+<!-- ЧАСТЬ 5 ИЗ 5: ИГРОВЫЕ ЦИКЛЫ И ЗАПУСК -->
+<script>
+    function initP(len) {
+        var p = [];
+        if (isHideFullRow) { 
+            for(var i=0; i<len; i++) p.push(i); if(st === 1) p.reverse();
+            if(st === 2) { for(var i=p.length-1; i>0; i--){var j=Math.floor(Math.random()*(i+1)); var tmp=p[i]; p[i]=p[j]; p[j]=tmp;} }
+        } else {
+            if (st === 0) { for (var i = 0; i < len; i++) p.push(i); p.reverse(); } 
+            else if (st === 1) { for (var i = len - 1; i >= 0; i--) p.push(i); p.reverse(); } 
+            else { for(var i=0; i<len; i++) p.push(i); for(var i=p.length-1; i>0; i--){var j=Math.floor(Math.random()*(i+1)); var tmp=p[i]; p[i]=p[j]; p[j]=tmp;} }
+        }
+        return p;
+    }
+
+    window.onload=function(){
+        bTab();bKbd(); initSpeechRecognition();
+        document.getElementById("btnTheme").onclick=function(){
+            document.body.classList.toggle("dark");
+            document.getElementById("btnTheme").innerText = document.body.classList.contains("dark") ? "☀️" : "🌙";
+        };
+        document.getElementById("chkVoiceMode").onchange=function(){
+            if(this.checked) { forceMicPermission(function(){ console.log("Mic ready"); }, function(){ console.log("Mic blocked"); }); }
+        };
+        document.getElementById("btnS").onclick=function(){
+            isVoiceMode = document.getElementById("chkVoiceMode").checked;
+            if(isVoiceMode) {
+                forceMicPermission(function() { startTraining(); }, function(err) {
+                    alert("Яндекс Браузер заблокировал запуск. Убедитесь, что в левой панели браузера (иконка замочка) включен тумблер 'Микрофон'.");
+                    document.getElementById("chkVoiceMode").checked = false; isVoiceMode = false; startTraining();
+                });
+            } else { startTraining(); }
+        };
+        document.getElementById("btnP").onclick=tP;
+        document.getElementById("btnR").onclick=function(){document.getElementById("scrE").style.display="none";document.getElementById("scrS").style.display="block"; document.getElementById("kb").style.display="none"; bTab();};
+    };
+
+    function startTraining() {
+        sc=0;kp=false;pool=[];psd=false;st=0;reviewQueue=[]; statCorrect = 0; statWrong = 0; startTime = Date.now();
+        isLearnMode = document.getElementById("chkLearnMode").checked; isHideFullRow = document.getElementById("chkHideFullRow").checked; isReverseLines = document.getElementById("chkReverseLines").checked;
+        maxHpSetting = parseInt(document.getElementById("selMaxHp").value); maxLinesSetting = parseInt(document.getElementById("selMaxLines").value); timerSetting = document.getElementById("selTimerMode").value;
+        hp = maxHpSetting; lvl = isReverseLines ? (maxLinesSetting - 1) : 0;
+        document.getElementById("micStatus").style.display = isVoiceMode ? "flex" : "none";
+        document.getElementById("kb").style.display = isVoiceMode ? "none" : "flex";
+        document.getElementById("btnP").innerText="Пауза ⏸"; document.getElementById("scrS").style.display="none";document.getElementById("scrG").style.display="block";
+        dis(false); rUI();
+        if(isVoiceMode) { speak("Начинаем осмотр. Ряд номер " + (lvl + 1), function() { mQ(); try{recognition.start();}catch(e){} }); } else { mQ(); }
+    }
+
+    function tP(){
+        if(lk||isLearnMode)return; psd=!psd;var b=document.getElementById("btnP"),bl=document.getElementById("lblB");
+        if(psd){clearInterval(tInt);b.innerText="Продолжить ▶";bl.innerText="⏸";bl.style.color="#718096";dis(true); if(recognition){try{recognition.stop();}catch(e){}} }
+        else{b.innerText="Пауза ⏸";bl.innerText="░";bl.style.color="#3182ce";dis(false);tInt=setInterval(function(){tL-=0.1;if(tL<=0){tL=0;clearInterval(tInt);hT();}upB();},100); if(isVoiceMode && recognition){try{recognition.start();}catch(e){}} }
+    }
+    function mQ(){
+        if(psd)return;lk=false;document.getElementById("lblRes").innerHTML="";
+        bTab(); CHART.forEach(function(_,i){document.getElementById("tr-"+i).className="";});document.getElementById("tr-"+lvl).className="highlight";
+        var rd=CHART[lvl];
+        if(!kp){
+            if(reviewQueue.length > 0 && reviewQueue.triggerStep <= statCorrect) {
+                var reviewItem = reviewQueue.shift(); tIdx = reviewItem.index; tl = reviewItem.letter;
+                document.getElementById("lblRes").innerHTML = "<span style='color:#d69e2e; font-size:14px;'>🧠 Повтор ошибки!</span>";
+            } else { if(pool.length===0){pool=initP(rd.letters.length);} tIdx=pool.pop(); tl=rd.letters[tIdx]; }
+        }
+        kp=false;
+        if(isHideFullRow){
+            var hStr="";for(var i=0;i<rd.letters.length;i++){hStr+=(i===tIdx)?"░ ":(sc>i||(st===1&&i>tIdx)?rd.letters[i]+" ":"• "); var cell = document.getElementById("l-"+lvl+"-"+i); if(cell) cell.innerText = "░";}
+            document.getElementById("lblB").innerText=hStr.trim();document.getElementById("lblHint").innerText="Слепой ввод. Шаг " + (sc+1) + " из " + rd.letters.length;
+        }else{
+            document.getElementById("lblB").innerText="░";document.getElementById("lblHint").innerText="Между [ " + (tIdx>0?rd.letters[tIdx-1]:"начала") + " ] и [ " + (tIdx<rd.letters.length-1?rd.letters[tIdx+1]:"конца") + " ]";
+            var cell = document.getElementById("l-"+lvl+"-"+tIdx); if(cell) cell.innerText = "░";
+        }
+        var targetCellElement = document.getElementById("l-"+lvl+"-"+tIdx);if(targetCellElement) { targetCellElement.className = "current-letter"; }
+        document.getElementById("lblR").innerText="Строка №" + (lvl+1) + " (V = " + rd.v + ")";document.getElementById("lblStep").innerText=isHideFullRow?"Слепой ряд":ST_N[st];
+        rUI();sT();
+    }
+    function sT(){
+        clearInterval(tInt); if(isLearnMode){document.getElementById("bT").style.width="100%";document.getElementById("btnP").style.display="none";return;}
+        document.getElementById("btnP").style.display="inline-block";
+        tT = (timerSetting === "fast") ? 5 : (timerSetting === "slow" ? 20 : (lvl >= 4 ? 5 : 10));
+        tL=tT;upB(); tInt=setInterval(function(){tL-=0.1;if(tL<=0){tL=0;clearInterval(tInt);hT();}upB();},100);
+    }
+    function upB(){document.getElementById("bT").style.width=((tL/tT)*100)+"%";}
+    function hT(){
+        if(lk||psd)return;lk=true;clearInterval(tInt);dis(true);hp--;kp=true;statWrong++;speak("Время вышло");
+        reviewQueue.push({ index: tIdx, letter: tl, triggerStep: statCorrect + 2 });
+        document.getElementById("lblRes").innerHTML="<span class='error'>Время вышло! Ответ: '" + tl + "'</span>";document.getElementById("lblB").innerText=tl;rUI();
+        if(hp<=0){setTimeout(function(){fin(false);},1000);return;} setTimeout(function(){dis(false);mQ();},1500);
+    }
+    function checkAnswer(val){
+        if(lk||psd)return;
+        if(val===tl){
+            clearInterval(tInt);sc++;statCorrect++; if(!isVoiceMode) speak(tl);
+            if(sc>=CHART[lvl].letters.length){
+                sc=0;pool=[];st++;
+                if(st>2){
+                    st=0;
+                    if(isReverseLines){ lvl--; if(lvl<0){if(recognition){try{recognition.stop();}catch(e){}} fin(true);return;} } 
+                    else { lvl++; if(lvl>=maxLinesSetting){if(recognition){try{recognition.stop();}catch(e){}} fin(true);return;} }
+                    if(isVoiceMode) { lk=true; speak("Ряд номер " + (lvl + 1), function() { mQ(); }); return; }
+                }
+            } mQ();
+        }else{
+            lk=true;clearInterval(tInt);dis(true);hp--;kp=true;statWrong++;speak("Ошибка");
+            reviewQueue.push({ index: tIdx, letter: tl, triggerStep: statCorrect + 2 });
+            document.getElementById("lblRes").innerHTML="<span class='error'>Ошибка ❌ Ответ: '" + tl + "'</span>";document.getElementById("lblB").innerText=tl;rUI();
+            if(hp<=0){if(recognition){try{recognition.stop();}catch(e){}} setTimeout(function(){fin(false);},1000);return;} setTimeout(function(){dis(false);mQ();},1500);
+        }
+    }
+    function rUI(){let m=CHART[lvl]?CHART[lvl].letters.length:3; document.getElementById("lblL").innerText=isReverseLines? "Строка " + (lvl+1) + " ➔ 1" : "Уровень " + (lvl+1) + " / " + maxLinesSetting; document.getElementById("lblH").innerText="♥".repeat(hp)+"♡".repeat(maxHpSetting-hp);document.getElementById("bP").style.width=(sc/m*100)+"%";}
+    function fin(win){
+        clearInterval(tInt); if(recognition){try{recognition.stop();}catch(e){}} document.getElementById("kb").style.display="none"; document.getElementById("scrG").style.display="none";document.getElementById("scrE").style.display="block";
+        var tT=Math.round((Date.now()-startTime)/1000),min=Math.floor(tT/60),sec=tT%60,tStr=min>0? min + " мин " + sec + " сек" : sec + " сек",tot=statCorrect+statWrong,acc=tot>0?Math.round((statCorrect/tot)*100):0;
+        document.getElementById("statsBlock").innerHTML='<div class="stats-item"><div class="stats-label">⏱️ Время тренировки</div><div class="stats-value">'+tStr+'</div></div><div class="stats-item"><div class="stats-label">🎯 Точность памяти</div><div class="stats-value">'+acc+'%</div></div><div class="stats-item"><div class="stats-label">⌨️ Всего попыток</div><div class="stats-value">'+tot+'</div></div><div class="stats-item"><div class="stats-label">❌ Ошибки контекста</div><div class="stats-value">'+statWrong+'</div></div>';
+        if(win){speak("Поздравляю, отличная память");document.getElementById("lblET").innerText="Великолепно! 🎉";document.getElementById("lblED").innerHTML="Вы полностью завершили проверку строк таблицы Сивцева!<br>Точность: <b>"+acc+"%</b>.";}
+        else{speak("Тренировка окончена");document.getElementById("lblET").innerText="Тренировка окончена ❌";document.getElementById("lblED").innerHTML= "Вы остановились на уровне " + (lvl+1) + ".<br>Результат: <b>V = " + CHART[lvl].v + "</b>.";}
+    }
+</script>
+</body>
+</html>
