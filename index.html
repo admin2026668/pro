@@ -1,4 +1,4 @@
-<!-- ЧАСТЬ 1 ИЗ 5: СТИЛИ И МОБИЛЬНЫЙ МАКЕТ -->
+<!-- ЧАСТЬ 1 ИЗ 5: СТИЛИ И МОБИЛЬНАЯ ВЕРСТКА -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -21,45 +21,47 @@
         .big-letter{font-size:36px;font-weight:bold;color:#3182ce;margin:5px 0;min-height:80px;display:flex;align-items:center;justify-content:center;letter-spacing:4px;}
         .progress-bg{background:var(--border);height:8px;border-radius:4px;overflow:hidden;margin-top:10px;width:100%;}
         .progress-fill{background:#38a169;height:100%;width:0%;transition:width 0.2s;}
-<!-- ЧАСТЬ 2 ИЗ 5: СТИЛИ ИНТЕРФЕЙСА И НАСТРОЙКИ СТАРТА -->
-        .timer-bg{background:var(--kbd-border);height:4px;width:100%;position:absolute;top:0;left:0;}
-        .timer-fill{background:#e53e3e;height:100%;width:100%;}
-        .result{font-size:16px;font-weight:bold;margin:8px 0;min-height:22px;}
-        .error{color:#e53e3e;}
-        .kbd{display:flex;justify-content:center;gap:6px;padding:10px;background:var(--card-bg);border-top:1px solid var(--border);position:fixed;bottom:0;left:0;right:0;z-index:100;box-shadow: 0 -2px 10px rgba(0,0,0,0.05);}
-        .k-btn{font-size:18px;flex:1;max-width:50px;height:50px;background:var(--kbd-btn);border:2px solid var(--kbd-border);color:var(--text);border-radius:8px;cursor:pointer;font-weight:bold;box-shadow:0 2px 0 var(--kbd-border);display:flex;align-items:center;justify-content:center;}
-        .k-btn:active:not(:disabled){transform:translateY(2px);box-shadow:0 0 0 transparent;}
-        .k-btn:disabled{opacity:0.4;cursor:not-allowed;}
-        .stats-grid {display:grid;grid-template-columns:1fr;gap:10px;margin:15px 0;text-align:left;}
-        .stats-item {background:var(--bg);border:1px solid var(--border);padding:12px;border-radius:8px;}
-        .stats-label {font-size:12px;color:#718096;font-weight:500;}
-        .stats-value {font-size:16px;font-weight:bold;margin-top:2px;}
-        .modes-container {background:var(--kbd-btn);border-radius:8px;padding:12px;margin:10px 0;text-align:left;display:block;width:100%;box-sizing:border-box;}
-        .mode-select {display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;font-weight:500;margin-bottom:12px;padding:4px 0;}
-        .mode-select input[type="checkbox"] {width:20px;height:20px;cursor:pointer;}
-        .hint-text {font-size:13px;color:#718096;font-style:italic;min-height:18px;margin-bottom:5px;}
-        .settings-group {display:flex;flex-direction:column;gap:12px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--border);width:100%;}
-        .settings-row {display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:500;gap:10px;}
-        .settings-select {font-size:14px;padding:8px;border-radius:6px;background:var(--card-bg);color:var(--text);border:1px solid var(--kbd-border);cursor:pointer;max-width:50%;}
-        .mic-status {font-size:14px;font-weight:bold;color:#dd6b20;margin-bottom:10px;display:none;align-items:center;justify-content:center;gap:6px;padding:6px;background:rgba(221,107,32,0.1);border-radius:6px;}
-        .mic-active {color:#38a169;background:rgba(56,161,105,0.1);animation:pulse 1.5s infinite;}
-        .sivtsev-table{width:100%;border-collapse:collapse;text-align:center;font-family:Arial,sans-serif;font-weight:bold;}
-        .sivtsev-table tr{height:28px;}
-        .highlight{background:rgba(49,130,206,0.08);}
-        .highlight td span {opacity:0.2;transition:all 0.2s;}
-        .highlight td span.current-letter {opacity:1 !important;color:#fff !important;background:#3182ce !important;padding:2px 4px;border-radius:4px;}
-        .r0{font-size:26px;}.r1{font-size:20px;}.r2{font-size:16px;}.r3{font-size:14px;}.r4{font-size:12px;}.r5{font-size:11px;}
-        .r6{font-size:10px;}.r7{font-size:9px;}.r8{font-size:8px;}.r9{font-size:7px;}.r10{font-size:6px;}.r11{font-size:5px;}
-        .step-badge {font-size:11px;background:var(--kbd-btn);padding:2px 6px;border-radius:10px;margin-left:5px;}
-        @media (min-width:600px) {
-            .container {flex-direction:row;padding-bottom:20px;}
-            .card {flex:1;} .table-card {width:300px;}
-            .kbd {position:static;box-shadow:none;padding:0;margin-top:15px;border:none;background:transparent;}
-            .stats-grid {grid-template-columns:1fr 1fr;}
-        }
     </style>
 </head>
-<!-- ЧАСТЬ 3 ИЗ 5: ИГРОВЫЕ ПАНЕЛИ И НАЧАЛО СКРИПТА -->
+<!-- ЧАСТЬ 2 ИЗ 5: СТИЛИ ИНТЕРФЕЙСА И КНОПОК -->
+<style>
+    .timer-bg{background:var(--kbd-border);height:4px;width:100%;position:absolute;top:0;left:0;}
+    .timer-fill{background:#e53e3e;height:100%;width:100%;}
+    .result{font-size:16px;font-weight:bold;margin:8px 0;min-height:22px;}
+    .error{color:#e53e3e;}
+    .kbd{display:flex;justify-content:center;gap:6px;padding:10px;background:var(--card-bg);border-top:1px solid var(--border);position:fixed;bottom:0;left:0;right:0;z-index:100;box-shadow: 0 -2px 10px rgba(0,0,0,0.05);}
+    .k-btn{font-size:18px;flex:1;max-width:50px;height:50px;background:var(--kbd-btn);border:2px solid var(--kbd-border);color:var(--text);border-radius:8px;cursor:pointer;font-weight:bold;box-shadow:0 2px 0 var(--kbd-border);display:flex;align-items:center;justify-content:center;}
+    .k-btn:active:not(:disabled){transform:translateY(2px);box-shadow:0 0 0 transparent;}
+    .k-btn:disabled{opacity:0.4;cursor:not-allowed;}
+    .stats-grid {display:grid;grid-template-columns:1fr;gap:10px;margin:15px 0;text-align:left;}
+    .stats-item {background:var(--bg);border:1px solid var(--border);padding:12px;border-radius:8px;}
+    .stats-label {font-size:12px;color:#718096;font-weight:500;}
+    .stats-value {font-size:16px;font-weight:bold;margin-top:2px;}
+    .modes-container {background:var(--kbd-btn);border-radius:8px;padding:12px;margin:10px 0;text-align:left;display:block;width:100%;box-sizing:border-box;}
+    .mode-select {display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;font-weight:500;margin-bottom:12px;padding:4px 0;}
+    .mode-select input[type="checkbox"] {width:20px;height:20px;cursor:pointer;}
+    .hint-text {font-size:13px;color:#718096;font-style:italic;min-height:18px;margin-bottom:5px;}
+    .settings-group {display:flex;flex-direction:column;gap:12px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--border);width:100%;}
+    .settings-row {display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:500;gap:10px;}
+    .settings-select {font-size:14px;padding:8px;border-radius:6px;background:var(--card-bg);color:var(--text);border:1px solid var(--kbd-border);cursor:pointer;max-width:50%;}
+    .mic-status {font-size:14px;font-weight:bold;color:#dd6b20;margin-bottom:10px;display:none;align-items:center;justify-content:center;gap:6px;padding:6px;background:rgba(221,107,32,0.1);border-radius:6px;}
+    .mic-active {color:#38a169;background:rgba(56,161,105,0.1);animation:pulse 1.5s infinite;}
+    .sivtsev-table{width:100%;border-collapse:collapse;text-align:center;font-family:Arial,sans-serif;font-weight:bold;}
+    .sivtsev-table tr{height:28px;}
+    .highlight{background:rgba(49,130,206,0.08);}
+    .highlight td span {opacity:0.2;transition:all 0.2s;}
+    .highlight td span.current-letter {opacity:1 !important;color:#fff !important;background:#3182ce !important;padding:2px 4px;border-radius:4px;}
+    .r0{font-size:26px;}.r1{font-size:20px;}.r2{font-size:16px;}.r3{font-size:14px;}.r4{font-size:12px;}.r5{font-size:11px;}
+    .r6{font-size:10px;}.r7{font-size:9px;}.r8{font-size:8px;}.r9{font-size:7px;}.r10{font-size:6px;}.r11{font-size:5px;}
+    .step-badge {font-size:11px;background:var(--kbd-btn);padding:2px 6px;border-radius:10px;margin-left:5px;}
+    @media (min-width:600px) {
+        .container {flex-direction:row;padding-bottom:20px;}
+        .card {flex:1;} .table-card {width:300px;}
+        .kbd {position:static;box-shadow:none;padding:0;margin-top:15px;border:none;background:transparent;}
+        .stats-grid {grid-template-columns:1fr 1fr;}
+    }
+</style>
+<!-- ЧАСТЬ 3 ИЗ 5: ИГРОВЫЕ ЭКРАНЫ И НАЧАЛО СКРИПТА -->
 <body>
 <div class="container" id="mainContainer">
     <button class="theme-toggle" id="btnTheme">🌙</button>
@@ -67,7 +69,7 @@
         <div id="scrS">
             <h2 style="font-size:20px;margin-top:5px;">Тренажер памяти Сивцева 🧠</h2>
             <div class="modes-container">
-                <label class="mode-select"><span style="color:#3182ce;font-weight:bold;">🎙️ Голосовой осмотр (микрофон)</span><input type="checkbox" id="chkVoiceMode" checked></label>
+                <label class="mode-select"><span style="color:#3182ce;font-weight:bold;">🎙️ Голосовой осмотр (микрофон)</span><input type="checkbox" id="chkVoiceMode"></label>
                 <label class="mode-select"><span>🎓 Режим обучения (без таймера)</span><input type="checkbox" id="chkLearnMode"></label>
                 <label class="mode-select"><span>🔒 Скрывать всю строку целиком</span><input type="checkbox" id="chkHideFullRow"></label>
                 <div class="settings-group">
@@ -76,7 +78,7 @@
                         <select id="selMaxLines" class="settings-select">
                             <option value="3">Ряд 3 (V=0.3)</option>
                             <option value="5">Ряд 5 (V=0.5)</option>
-                            <option value="8">Рuad 8 (V=0.8)</option>
+                            <option value="8">Ряд 8 (V=0.8)</option>
                             <option value="9" selected>Ряд 9 (V=0.9)</option>
                             <option value="10">Ряд 10 (V=1.0)</option>
                             <option value="12">Ряд 12 (V=2.0)</option>
@@ -138,6 +140,7 @@
         <table class="sivtsev-table" id="mB"></table>
     </div>
 </div>
+<!-- ЧАСТЬ 4 ИЗ 5: СИСТЕМА ГОЛОСА И ТАБЛИЦА БУКВ -->
 <script>
     var CHART = [
         {letters:["Ш","Б"],v:"0.1"},{letters:["М","Н","К"],v:"0.2"},{letters:["Ы","М","Б","Ш"],v:"0.3"},
@@ -151,7 +154,7 @@
     var maxHpSetting = 5, maxLinesSetting = 9, timerSetting = "standard";
     var ST_N = ["Слева направо", "Справа налево", "Случайный порядок"];
     var reviewQueue = []; var recognition = null; var audioCtx = null;
-<!-- ЧАСТЬ 4 ИЗ 5: СИСТЕМА ЗВУКА И ИНИЦИАЛИЗАЦИЯ ИНТЕРФЕЙСА -->
+
     function speak(text, callback) {
         if ('speechSynthesis' in window) {
             window.speechSynthesis.cancel();
@@ -172,15 +175,7 @@
                         if(onSuccess) onSuccess();
                     })
                     .catch(function(err) { if(onError) onError(err); });
-            } else {
-                var gUM = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-                if(gUM) {
-                    gUM.call(navigator, {audio: true}, function(stream) {
-                        stream.getTracks().forEach(function(t) { t.stop(); });
-                        if(onSuccess) onSuccess();
-                    }, function(err) { if(onError) onError(err); });
-                } else { if(onError) onError("Not supported"); }
-            }
+            } else { if(onError) onError("Not supported"); }
         } catch(e) { if(onError) onError(e); }
     }
 
@@ -196,7 +191,7 @@
             recognition.onresult = function(event) {
                 if (lk || psd) return;
                 var lastResultIdx = event.results.length - 1;
-                var resultText = event.results[lastResultIdx][0].transcript.trim().toUpperCase();
+                var resultText = event.results[lastResultIdx].transcript.trim().toUpperCase();
                 var cleanLetter = "";
                 for(var i=0; i<resultText.length; i++) { 
                     var char = resultText.charAt(i);
@@ -225,7 +220,9 @@
         });
     }
     function dis(s) { document.querySelectorAll(".k-btn").forEach(function(b){b.disabled=s;}); }
-<!-- ЧАСТЬ 5 ИЗ 5: ИГРОВЫЕ ЦИКЛЫ И СТАРТ ТРЕНИРОВКИ -->
+</script>
+<!-- ЧАСТЬ 5 ИЗ 5: ИГРОВЫЕ ЦИКЛЫ И ЗАПУСК -->
+<script>
     function initP(len) {
         var p = [];
         if (isHideFullRow) { 
@@ -245,11 +242,14 @@
             document.body.classList.toggle("dark");
             document.getElementById("btnTheme").innerText = document.body.classList.contains("dark") ? "☀️" : "🌙";
         };
+        document.getElementById("chkVoiceMode").onchange=function(){
+            if(this.checked) { forceMicPermission(function(){ console.log("Mic ready"); }, function(){ console.log("Mic blocked"); }); }
+        };
         document.getElementById("btnS").onclick=function(){
             isVoiceMode = document.getElementById("chkVoiceMode").checked;
             if(isVoiceMode) {
                 forceMicPermission(function() { startTraining(); }, function(err) {
-                    alert("Ядро WebView блокирует микрофон локально. Включены крупные экранные кнопки.");
+                    alert("Яндекс Браузер заблокировал запуск. Убедитесь, что в левой панели браузера (иконка замочка) включен тумблер 'Микрофон'.");
                     document.getElementById("chkVoiceMode").checked = false; isVoiceMode = false; startTraining();
                 });
             } else { startTraining(); }
@@ -319,7 +319,7 @@
                 if(st>2){
                     st=0;
                     if(isReverseLines){ lvl--; if(lvl<0){if(recognition){try{recognition.stop();}catch(e){}} fin(true);return;} } 
-                    else { lvl++; if(lvl>maxLinesSetting){if(recognition){try{recognition.stop();}catch(e){}} fin(true);return;} }
+                    else { lvl++; if(lvl>=maxLinesSetting){if(recognition){try{recognition.stop();}catch(e){}} fin(true);return;} }
                     if(isVoiceMode) { lk=true; speak("Ряд номер " + (lvl + 1), function() { mQ(); }); return; }
                 }
             } mQ();
